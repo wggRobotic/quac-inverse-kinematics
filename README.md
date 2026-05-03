@@ -13,9 +13,11 @@ controls all the servos, so arm, gripper and flipper
 ### publishers
 - `arm_joint_trajectory` : `trajectory_msgs/msg/joint_trajectory` target joint positions
 
-### parameters
-- `l1` : first segment
-- `l2` : second segment
-- `l3` : third segment
-- `gripper_radius` : radius from joint to gripper parts
-- `gripper_offset` : offset of gripper plates towards the middle
+### parameter
+```
+l1: String                # first segment
+l2: String                # second segment
+l3: String                # third segment
+gripper_radius: double    # radius from joint to gripper parts
+gripper_offset: double    # offset of gripper plates towards the middle
+```
