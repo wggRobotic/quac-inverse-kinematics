@@ -16,6 +16,7 @@ ament_target_dependencies(ik_node rclcpp geometry_msgs trajectory_msgs std_msgs)
 
 install(TARGETS
   ik_node
-  DESTINATION lib/${PROJECT_NAME})
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 ament_package()

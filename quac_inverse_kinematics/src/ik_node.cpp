@@ -50,7 +50,7 @@ private:
 
     trajectory_msgs::msg::JointTrajectoryPoint point;
     point.positions.push_back( msg->data);
-    point.time_from_start.sec = 0.5;
+    point.time_from_start.sec = 1;
 
     joint_trajectory.points.push_back(point);
     joint_trajectory.joint_names.push_back("flipper_servo_joint");
@@ -72,7 +72,7 @@ private:
     double angle = safeAsin(width / get_parameter("gripper_radius").as_double());
 
     point.positions.push_back(angle);
-    point.time_from_start.sec = 0.5;
+    point.time_from_start.sec = 1;
 
     joint_trajectory.points.push_back(point);
     joint_trajectory.joint_names.push_back("gripper_servo_joint");
