@@ -69,7 +69,7 @@ private:
     trajectory_msgs::msg::JointTrajectoryPoint point;
 
     double width = msg->data + 2. * get_parameter("gripper_offset").as_double();
-    double angle = safeAsin(width / get_parameter("gripper_radius").as_double());
+    double angle = safeAsin(width / get_parameter("gripper_radius").as_double() / 2);
 
     point.positions.push_back(angle);
     point.time_from_start.sec = 1;
