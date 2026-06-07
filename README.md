@@ -20,4 +20,5 @@ l2: String                # second segment
 l3: String                # third segment
 gripper_radius: double    # radius from joint to gripper parts
 gripper_offset: double    # offset of gripper plates towards the middle
+joint_names: String_array # names of arm and gripper joints
 ```

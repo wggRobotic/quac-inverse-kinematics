@@ -12,10 +12,23 @@ class QuacIKNode : public rclcpp::Node {
 public:
   QuacIKNode() : Node("ik_node") {
     declare_parameter<double>("l1", 0.1);
+    l1 = get_parameter("l1").as_double();
+
     declare_parameter<double>("l2", 0.1);
+    l2 = get_parameter("l2").as_double();
+
     declare_parameter<double>("l3", 0.1);
+    l3 = get_parameter("l3").as_double();
+
     declare_parameter<double>("gripper_radius", 0.01);
+    gripper_radius = get_parameter("gripper_radius").as_double();
+
     declare_parameter<double>("gripper_offset", 0.01);
+    gripper_offset = get_parameter("gripper_offset").as_double();
+
+    declare_parameter<std::vector<std::string>>("joint_names", {"joint0", "joint1", "joint2"});
+    joint_names = get_parameter("joint_names").as_string_array();
+    if (joint_names.size() < 3) joint_names = {"joint0", "joint1", "joint2"};
 
     ee_pose_sub_ = create_subscription<geometry_msgs::msg::Pose>(
       "ee_pose", 10,
@@ -68,14 +81,14 @@ private:
 
     trajectory_msgs::msg::JointTrajectoryPoint point;
 
-    double width = msg->data + 2. * get_parameter("gripper_offset").as_double();
-    double angle = safeAsin(width / get_parameter("gripper_radius").as_double() / 2);
+    double width = msg->data + 2. * gripper_offset;
+    double angle = safeAsin(width / gripper_radius / 2);
 
     point.positions.push_back(angle);
     point.time_from_start.sec = 1;
 
     joint_trajectory.points.push_back(point);
-    joint_trajectory.joint_names.push_back("gripper_servo_joint");
+    joint_trajectory.joint_names.push_back(joint_names[2]);
 
     joint_commands_pub_->publish(joint_trajectory);
   }
@@ -86,10 +99,6 @@ private:
 
   std::array<double, 2> inverseKinematics(double x, double /*y*/, double z) {
     std::array<double, 2> theta;
-
-    const double l1 = get_parameter("l1").as_double();
-    const double l2 = get_parameter("l2").as_double();
-    const double l3 = get_parameter("l3").as_double();
 
     const double r = std::hypot(x, z);
     const double l12 = std::hypot(l1, l2);
@@ -132,11 +141,14 @@ private:
     point.time_from_start.sec = 2;
 
     joint_trajectory.points.push_back(point);
-    joint_trajectory.joint_names.push_back("arm_servo_0_joint");
-    joint_trajectory.joint_names.push_back("arm_servo_1_joint");
+    joint_trajectory.joint_names.push_back(joint_names[0]);
+    joint_trajectory.joint_names.push_back(joint_names[1]);
 
     joint_commands_pub_->publish(joint_trajectory);
   }
+
+  double l1, l2, l3, gripper_radius, gripper_offset;
+  std::vector<std::string> joint_names;
 
   rclcpp::Subscription<geometry_msgs::msg::Pose>::SharedPtr ee_pose_sub_;
   rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr gripper_sub_;
