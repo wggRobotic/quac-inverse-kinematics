@@ -11,11 +11,11 @@ find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(trajectory_msgs REQUIRED)
 
-add_executable(ik_node src/ik_node.cpp)
-ament_target_dependencies(ik_node rclcpp geometry_msgs trajectory_msgs std_msgs)
+add_executable(inverse_kinematics src/inverse_kinematics.cpp)
+ament_target_dependencies(inverse_kinematics rclcpp geometry_msgs trajectory_msgs std_msgs)
 
 install(TARGETS
-  ik_node
+  inverse_kinematics
   DESTINATION lib/${PROJECT_NAME}
 )
 
